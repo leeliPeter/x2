@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { SidebarNav } from "@/components/sidebar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { Menu } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -13,7 +16,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <SidebarProvider>
+          <div className="flex min-h-screen">
+            <SidebarNav />
+            <div className="flex-1">
+              <div className="p-4">
+                <SidebarTrigger className="hover:bg-accent">
+                  <Menu className="h-5 w-5" />
+                </SidebarTrigger>
+              </div>
+              <main className="p-6">{children}</main>
+            </div>
+          </div>
+        </SidebarProvider>
+      </body>
     </html>
   );
 }
