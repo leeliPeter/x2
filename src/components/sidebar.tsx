@@ -1,3 +1,4 @@
+"use client";
 import {
   Sidebar,
   SidebarContent,
@@ -5,53 +6,44 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
+  useSidebar,
 } from "@/components/ui/sidebar";
-import { Home, Settings, User, LayoutDashboard } from "lucide-react";
+import { routes } from "@/data/route";
+import { Home, User, MessageCircle, GitGraph } from "lucide-react";
+import Link from "next/link";
 
 export function SidebarNav() {
+  const { setOpen, setOpenMobile, isMobile } = useSidebar();
+
+  const handleClick = () => {
+    if (isMobile) {
+      setOpenMobile(false);
+    } else {
+      setOpen(false);
+    }
+  };
+
   return (
     <Sidebar>
       <SidebarHeader className="border-b border-border px-2 py-4">
-        <h2 className="px-4 text-lg text-primary font-semibold">Dashboard</h2>
+        <h2 className="px-4 text-lg text-primary font-semibold">SideBar</h2>
       </SidebarHeader>
       <SidebarContent>
         <SidebarMenu className="flex flex-col gap-2 py-2 p-4">
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              tooltip="Dashboard"
-              className="hover:bg-primary hover:text-primary-foreground"
-            >
-              <LayoutDashboard className="h-4 w-4" />
-              <span>Dashboard</span>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              tooltip="Home"
-              className="hover:bg-primary hover:text-primary-foreground"
-            >
-              <Home className="h-4 w-4" />
-              <span>Home</span>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              tooltip="Settings"
-              className="hover:bg-primary hover:text-primary-foreground"
-            >
-              <Settings className="h-4 w-4" />
-              <span>Settings</span>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              tooltip="Profile"
-              className="hover:bg-primary hover:text-primary-foreground"
-            >
-              <User className="h-4 w-4" />
-              <span>Profile</span>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
+          {routes.map((route) => (
+            <SidebarMenuItem key={route.id}>
+              <Link href={route.href}>
+                <SidebarMenuButton
+                  tooltip={route.name}
+                  className="hover:bg-primary hover:text-primary-foreground w-full"
+                  onClick={handleClick}
+                >
+                  <route.icon className="h-4 w-4" />
+                  <span>{route.name}</span>
+                </SidebarMenuButton>
+              </Link>
+            </SidebarMenuItem>
+          ))}
         </SidebarMenu>
       </SidebarContent>
     </Sidebar>
